@@ -23,6 +23,9 @@ function keyPressed() {
   if (keyCode == 65){
     game.player.moveLeft()
   }
+  if(keyCode == 32){
+    game.player.jump()
+  }
 }
 
 
