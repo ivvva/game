@@ -5,11 +5,11 @@ function preload() {
 }
 
 function setup() {
-  let canvas = createCanvas(1750, 1000);
-  var x = (windowWidth - width) / 2;
-  var y = (windowHeight - height) / 2;
-  canvas.position(x, y);
-  background('')
+  createCanvas(1750, 1000);
+  // var x = (windowWidth - width) / 2;
+  // var y = (windowHeight - height) / 2;
+  // canvas.position(x, y);
+  // background('')
 }
 
 function draw() {

@@ -1,11 +1,18 @@
 class Background {
-    draw() {
-        image(game.backgroundImages[0].src, 0, 0, width, height)
-        image(game.backgroundImages[1].src, 0, 0, width, height)
-        image(game.backgroundImages[2].src, 0, 0, width, height)
-        image(game.backgroundImages[3].src, 0, 0, width, height)
-        image(game.backgroundImages[4].src, 0, 0, width, height)
-        image(game.backgroundImages[5].src, 0, 0, width, height)
-        image(game.backgroundImages[6].src, 0, 0, width, height)
-    }
+  draw() {
+    game.backgroundImages.forEach(function (img) {
+      if (keyCode == 68) {
+        img.x -= img.speed;
+      }
+      // else if(keyCode == 65){
+      //     img.x -= - img.speed
+      // }
+
+      image(img.src, img.x, 0, width, height);
+      image(img.src, img.x + width, 0, width, height);
+      if (img.x <= -width) {
+        img.x = 0;
+      }
+    });
+  }
 }
