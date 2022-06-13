@@ -24,14 +24,19 @@ class Player {
   }
   jump() {
     this.velocity = -20;
-    setTimeout('1000')
   }
 
   moveRight() {
+    if(this.x>=1750){
+      this.x = 1750 - this.x
+    }
     this.x += 10;
   }
 
   moveLeft() {
+    if(this.x<=0){
+      this.x = this.x +10
+    }
     this.x -= 5;
   }
 }
