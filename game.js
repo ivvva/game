@@ -32,7 +32,7 @@ function setup() {
 
 function draw() {
   checkInput();
-  checkWorldBounds(player, tiledmap)
+  checkWorldBounds(player, tiledmap);
 
   image(layerImages[BACKGROUND], 0, 0);
   image(layerImages[DETAILS], 0, 0);
@@ -45,7 +45,25 @@ function draw() {
   image(layerImages[FOREGROUND], 0, 0);
 }
 
+function die() {
+  player.velocity.x = 0;
+  player.velocity.y = -10;
+  player.rotationSpeed = 20;
+}
+
 function checkInput() {
+  let isOnDeath = isInContact(player, layer[DEATH]);
+  if (isOnDeath.any) {
+    player.alive = false;
+    die();
+  }
+  if ((player.alive = false)) {
+    return;
+  }
+  //movement
+  let touchingGround = isInContact(player, layer[GROUND]);
+  player.velocity.y = player.velocity.y + gravity;
+
   if (keyIsDown(LEFT_ARROW)) {
     player.mirrorX(-1);
     player.velocity.x = player.velocity.x - 1;
@@ -60,9 +78,34 @@ function checkInput() {
   if (player.velocity.x > 5) {
     player.velocity.x = 5;
   }
-  if (player.velocity.x > -1 && player.velocity.x < 1){
+  if (player.velocity.x > -1 && player.velocity.x < 1) {
     player.velocity.x = 0;
   }
 
-  player.velocity.x = 0.9 * player.velocity.x
+  player.velocity.x = 0.8 * player.velocity.x;
+  playerBrake(player, touchingGround);
+
+  //jumping
+  if (keyIsDown(32) && touchingGround.below) {
+    player.velocity.y = -6;
+  }
+
+  //ladder climbing
+  let onLadder = isInContact(player, layer[LADDERS]);
+  if (onLadder.any) {
+    if (keyIsDown(UP_ARROW)) {
+      player.velocity.y = 0;
+      player.position.y -= 4;
+    } else if (keyIsDown(DOWN_ARROW)) {
+      player.velocity.y = 0;
+
+      if (touchingGround.below) {
+        player.position.y = player.position.y + touchingGround.belowDistance;
+      } else {
+        player.position.y += 4;
+      }
+    } else {
+      player.velocity.y = 0;
+    }
+  }
 }
