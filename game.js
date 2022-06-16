@@ -3,8 +3,10 @@ let layerImages = [];
 
 let tiledmap;
 let font;
+let meow;
 // let pickupImage;
 let player;
+let pickup;
 
 let gravity = 0.3;
 let spritesheet;
@@ -17,51 +19,63 @@ let LADDERS = 3;
 let DEATH = 4;
 let FOREGROUND = 5;
 
-let deathScreen = document.getElementById('game-over')
-let restartBtn = document.querySelector('.restart-btn')
+let deathScreen = document.getElementById("game-over");
+let restartBtn = document.querySelector(".restart-btn");
 
-restartBtn.addEventListener('click', function(){
+restartBtn.addEventListener("click", function () {
   location.reload();
-})
+});
 // let pickup;
 
 // console.log(new Pickup)
 function preload() {
   tiledmap = loadTiledMap("new-map", "images");
   // pickupImage = loadImage("images/pngwing.com.png", 100, 100)
-  
 }
 
 function setup() {
   createCanvas(800, 450);
-  
-  player = createSprite(100, 100);
+  meow = loadSound("assets/ringt-nature-kidden1.wav");
+
+  player = createSprite(30, 50);
   player.velocity.x = 0;
   player.setDefaultCollider();
   player.alive = true;
   player.addAnimation("stand", "images/Cat Sprite Sheet (6) (1).png");
-  
+
+  pickup = createSprite(100, 400);
+  pickup.setDefaultCollider();
+  pickup.addAnimation("hehe", "images/sleeping-kitten.png");
+  pickup.immovable = true;
+
   layer = getTilemapLayers(tiledmap);
   layerImages = getTilemapImages(tiledmap);
-  
-  
 }
 
 function draw() {
   checkInput();
   checkWorldBounds(player, tiledmap);
-  
+
   image(layerImages[BACKGROUND], 0, 0);
   image(layerImages[DETAILS], 0, 0);
   image(layerImages[GROUND], 0, 0);
   image(layerImages[LADDERS], 0, 0);
   image(layerImages[DEATH], 0, 0);
-  
+
   drawSprite(player);
+  drawSprite(pickup);
   // pickup.show()
-  
+
   image(layerImages[FOREGROUND], 0, 0);
 }
+
+// function checkPickup(player){
+//   if(pickup.collide(player)){
+//     console.log('first')
+//     pickup.remove;
+//     return true;
+//   } return false;
+// }
 
 function die() {
   player.velocity.x = 0;
@@ -69,19 +83,18 @@ function die() {
   player.rotationSpeed = 20;
 }
 
-function endScreen() {
-  rect(0, 0, 800, 450);
-  fill(0)
- 
-}
-
 function checkInput() {
+  if (pickup.overlap(player)) {
+    pickup.remove();
+    meow.play();
+    // meow.stop(2)
+  }
+
   let isOnDeath = isInContact(player, layer[DEATH]);
   if (isOnDeath.any) {
     player.alive = false;
     die();
-    deathScreen.classList.remove('hidden')
-
+    deathScreen.classList.remove("hidden");
   }
   if ((player.alive = false)) {
     return;
