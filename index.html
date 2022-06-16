@@ -5,6 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <script src="https://cdn.jsdelivr.net/npm/p5@1.0.0/lib/p5.js"></script>
+    <link rel="stylesheet" href="style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -27,9 +28,7 @@
       src="https://cdn.rawgit.com/molleindustria/p5.play/42cd19c3/lib/p5.play.js"
       type="text/javascript"
     ></script>
-    <script src="libs/play.js"></script>
-
-    <script src="game.js"></script>
+   
     <style>
       body,
       html {
@@ -42,7 +41,16 @@
         height: 100%;
       }
     </style>
-    <title>Document</title>
+    <title>Katze Platformer</title>
   </head>
-  <body></body>
+  <body>
+    <div id = "game-over" class="game-over hidden">
+      <img src="images/bg.gif" alt="game-end">
+      <h1>You Died!</h1>
+      <button type="button", class="restart-btn">Try Again! </button>
+    </div>
+  </body>
+  <script src="libs/play.js"></script>
+  <script src="pickup.js"></script>
+  <script src="game.js"></script>
 </html>

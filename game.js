@@ -1,7 +1,11 @@
 let layer = [];
 let layerImages = [];
+
 let tiledmap;
+let font;
+// let pickupImage;
 let player;
+
 let gravity = 0.3;
 let spritesheet;
 let spritesheet_animation;
@@ -13,35 +17,49 @@ let LADDERS = 3;
 let DEATH = 4;
 let FOREGROUND = 5;
 
+let deathScreen = document.getElementById('game-over')
+let restartBtn = document.querySelector('.restart-btn')
+
+restartBtn.addEventListener('click', function(){
+  location.reload();
+})
+// let pickup;
+
+// console.log(new Pickup)
 function preload() {
   tiledmap = loadTiledMap("new-map", "images");
+  // pickupImage = loadImage("images/pngwing.com.png", 100, 100)
+  
 }
 
 function setup() {
   createCanvas(800, 450);
-
+  
   player = createSprite(100, 100);
   player.velocity.x = 0;
   player.setDefaultCollider();
   player.alive = true;
   player.addAnimation("stand", "images/Cat Sprite Sheet (6) (1).png");
-
+  
   layer = getTilemapLayers(tiledmap);
   layerImages = getTilemapImages(tiledmap);
+  
+  
 }
 
 function draw() {
   checkInput();
   checkWorldBounds(player, tiledmap);
-
+  
   image(layerImages[BACKGROUND], 0, 0);
   image(layerImages[DETAILS], 0, 0);
   image(layerImages[GROUND], 0, 0);
   image(layerImages[LADDERS], 0, 0);
   image(layerImages[DEATH], 0, 0);
-
+  
   drawSprite(player);
-
+  // pickup.show()
+  
   image(layerImages[FOREGROUND], 0, 0);
 }
 
@@ -51,11 +69,19 @@ function die() {
   player.rotationSpeed = 20;
 }
 
+function endScreen() {
+  rect(0, 0, 800, 450);
+  fill(0)
+ 
+}
+
 function checkInput() {
   let isOnDeath = isInContact(player, layer[DEATH]);
   if (isOnDeath.any) {
     player.alive = false;
     die();
+    deathScreen.classList.remove('hidden')
+
   }
   if ((player.alive = false)) {
     return;
