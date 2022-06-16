@@ -1,3 +1,10 @@
+let BACKGROUND = 0;
+let DETAILS = 1;
+let GROUND = 2;
+let LADDERS = 3;
+let DEATH = 4;
+let FOREGROUND = 5;
+
 let layer = [];
 let layerImages = [];
 
@@ -12,29 +19,21 @@ let gravity = 0.3;
 let spritesheet;
 let spritesheet_animation;
 
-let BACKGROUND = 0;
-let DETAILS = 1;
-let GROUND = 2;
-let LADDERS = 3;
-let DEATH = 4;
-let FOREGROUND = 5;
-
+let overlay = document.querySelector(".overlay");
 let deathScreen = document.getElementById("game-over");
+let kittenCount = document.querySelector(".kitten-count");
+let winScreen = document.getElementById("win");
+let count = document.querySelector(".count");
 let restartBtn = document.querySelectorAll(".restart-btn");
-let kittenCount = document.querySelector(".kitten-count")
-let winScreen = document.getElementById("win")
-restartBtn.forEach(button => {
-  button.addEventListener("click", function(){
+
+restartBtn.forEach((button) => {
+  button.addEventListener("click", function () {
     location.reload();
-  })
+  });
 });
 
-// let pickup;
-
-// console.log(new Pickup)
 function preload() {
   tiledmap = loadTiledMap("new-map", "images");
-  // pickupImage = loadImage("images/pngwing.com.png", 100, 100)
 }
 
 function setup() {
@@ -81,53 +80,46 @@ function draw() {
   drawSprite(pickup);
   drawSprite(pickup2);
   drawSprite(pickup3);
-  // pickup.show()
 
   image(layerImages[FOREGROUND], 0, 0);
 }
-
-// function checkPickup(player){
-//   if(pickup.collide(player)){
-//     console.log('first')
-//     pickup.remove;
-//     return true;
-//   } return false;
-// }
 
 function die() {
   player.velocity.x = 0;
   player.velocity.y = -10;
   player.rotationSpeed = 20;
 }
-let count = document.querySelector(".count")
-function checkInput() {
-  if (count.innerText == 3){
-    winScreen.classList.remove('hidden')
-  }
 
+function checkInput() {
+  if (count.innerText == 3) {
+    overlay.classList.remove("hidden");
+    winScreen.classList.remove("hidden");
+  }
 
   if (pickup.overlap(player)) {
     pickup.remove();
-    count.innerText++
+    count.innerText++;
     meow.play();
   } else if (pickup2.overlap(player)) {
     pickup2.remove();
-    count.innerText++
+    count.innerText++;
     meow.play();
   } else if (pickup3.overlap(player)) {
     pickup3.remove();
-    count.innerText++
+    count.innerText++;
     meow.play();
   }
   let isOnDeath = isInContact(player, layer[DEATH]);
   if (isOnDeath.any) {
     player.alive = false;
     die();
+    overlay.classList.remove("hidden");
     deathScreen.classList.remove("hidden");
   }
   if ((player.alive = false)) {
     return;
   }
+
   //movement
   let touchingGround = isInContact(player, layer[GROUND]);
   player.velocity.y = player.velocity.y + gravity;
