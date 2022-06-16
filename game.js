@@ -4,7 +4,7 @@ let layerImages = [];
 let tiledmap;
 let font;
 let meow;
-// let pickupImage;
+let jump;
 let player;
 let pickup;
 
@@ -20,11 +20,15 @@ let DEATH = 4;
 let FOREGROUND = 5;
 
 let deathScreen = document.getElementById("game-over");
-let restartBtn = document.querySelector(".restart-btn");
-
-restartBtn.addEventListener("click", function () {
-  location.reload();
+let restartBtn = document.querySelectorAll(".restart-btn");
+let kittenCount = document.querySelector(".kitten-count")
+let winScreen = document.getElementById("win")
+restartBtn.forEach(button => {
+  button.addEventListener("click", function(){
+    location.reload();
+  })
 });
+
 // let pickup;
 
 // console.log(new Pickup)
@@ -36,6 +40,7 @@ function preload() {
 function setup() {
   createCanvas(800, 450);
   meow = loadSound("assets/ringt-nature-kidden1.wav");
+  jump = loadSound("assets/mixkit-player-jumping-in-a-video-game-2043.wav");
 
   player = createSprite(30, 50);
   player.velocity.x = 0;
@@ -43,10 +48,20 @@ function setup() {
   player.alive = true;
   player.addAnimation("stand", "images/Cat Sprite Sheet (6) (1).png");
 
-  pickup = createSprite(100, 400);
+  pickup = createSprite(100, 218);
   pickup.setDefaultCollider();
   pickup.addAnimation("hehe", "images/sleeping-kitten.png");
   pickup.immovable = true;
+
+  pickup2 = createSprite(450, 85);
+  pickup2.setDefaultCollider();
+  pickup2.addAnimation("bru", "images/sleeping-kitten.png");
+  pickup2.immovable = true;
+
+  pickup3 = createSprite(715, 200);
+  pickup3.setDefaultCollider();
+  pickup3.addAnimation("bruhh", "images/sleeping-kitten.png");
+  pickup3.immovable = true;
 
   layer = getTilemapLayers(tiledmap);
   layerImages = getTilemapImages(tiledmap);
@@ -64,6 +79,8 @@ function draw() {
 
   drawSprite(player);
   drawSprite(pickup);
+  drawSprite(pickup2);
+  drawSprite(pickup3);
   // pickup.show()
 
   image(layerImages[FOREGROUND], 0, 0);
@@ -82,14 +99,26 @@ function die() {
   player.velocity.y = -10;
   player.rotationSpeed = 20;
 }
-
+let count = document.querySelector(".count")
 function checkInput() {
-  if (pickup.overlap(player)) {
-    pickup.remove();
-    meow.play();
-    // meow.stop(2)
+  if (count.innerText == 3){
+    winScreen.classList.remove('hidden')
   }
 
+
+  if (pickup.overlap(player)) {
+    pickup.remove();
+    count.innerText++
+    meow.play();
+  } else if (pickup2.overlap(player)) {
+    pickup2.remove();
+    count.innerText++
+    meow.play();
+  } else if (pickup3.overlap(player)) {
+    pickup3.remove();
+    count.innerText++
+    meow.play();
+  }
   let isOnDeath = isInContact(player, layer[DEATH]);
   if (isOnDeath.any) {
     player.alive = false;
@@ -127,6 +156,7 @@ function checkInput() {
   //jumping
   if (keyIsDown(32) && touchingGround.below) {
     player.velocity.y = -6;
+    jump.play();
   }
 
   //ladder climbing

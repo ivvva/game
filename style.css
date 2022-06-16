@@ -30,7 +30,8 @@
   }
 }
 
-.game-over {
+.game-over,
+.win {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -43,3 +44,18 @@
 .hidden {
     display: none;
 }
+
+section{
+  position: absolute;
+  display: flex;
+  /* flex-direction: column; */
+  justify-content:flex-end;
+  align-items:flex-end;
+  right: 22%;
+  top: 17%;
+}
+
+section img{
+  height: 30px;
+}
+
