@@ -43,24 +43,23 @@
 }
 
 .hidden {
-    display: none;
+  display: none;
 }
 
-section{
+section {
   position: absolute;
   display: flex;
-  /* flex-direction: column; */
-  justify-content:flex-end;
-  align-items:flex-end;
+  justify-content: flex-end;
+  align-items: flex-end;
   right: 22%;
   top: 17%;
 }
 
-section img{
+section img {
   height: 30px;
 }
 
-.overlay{
+.overlay {
   position: fixed;
   top: 0;
   left: 0;
@@ -69,4 +68,3 @@ section img{
   z-index: 1;
   background-color: rgba(255, 255, 255, 0.5); /*dim the background*/
 }
-
